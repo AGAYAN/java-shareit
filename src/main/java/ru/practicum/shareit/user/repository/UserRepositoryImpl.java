@@ -52,6 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .max()
                 .orElse(0) + 1;
     }
+
     public void validate(UserDto userDto, User existingUser) {
         if (userDto.getName() != null) {
             existingUser.setName(userDto.getName());

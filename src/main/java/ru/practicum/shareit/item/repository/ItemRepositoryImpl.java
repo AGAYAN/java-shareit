@@ -28,11 +28,11 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public ItemDto updateItem(Long itemId, ItemDto item, Long ownerId) {
-
         Item item1 = findItemById(itemId);
         validation(item, item1);
         return itemMapper.parseItemNoDto(item1);
     }
+
     @Override
     public List<Item> findItemsByOwnerId(Long ownerId) {
         return itemMap.values().stream()

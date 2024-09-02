@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(exclude = {"id"})
-public class User{
+public class User {
     private Long id;
 
     private String name;

@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.model.Item;
  * TODO Sprint add-controllers.
  */
 @Data
-@EqualsAndHashCode(exclude = {"id"})
+@EqualsAndHashCode(exclude = {"id"}, callSuper = true)
 public class ItemDto extends Item {
 
     private Long id;
