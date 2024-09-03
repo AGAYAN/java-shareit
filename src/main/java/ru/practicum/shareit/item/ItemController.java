@@ -13,20 +13,18 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
 
     private static final Logger log = LoggerFactory.getLogger(ItemController.class);
+    private static final String USER_ID_HEADER = "X-Sharer-User-Id";
     private final ItemService itemService;
 
     @PostMapping
     public ItemDto addNewItem(@Valid @RequestBody ItemDto item,
-                              @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                              @RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Происходит добавление");
         return itemService.createItem(item, ownerId);
     }
@@ -34,26 +32,26 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@PathVariable("itemId") @Positive Long itemId,
                               @RequestBody ItemDto item,
-                              @RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId) {
+                              @RequestHeader(USER_ID_HEADER) @NotNull Long ownerId) {
         log.info("Происходит изменение");
         return itemService.updateItem(itemId, item, ownerId);
     }
 
     @GetMapping("/{itemId}")
-    public Item getItemBuId(@PathVariable("itemId") Long itemId) {
-        log.info("Происходит поиск по id");
+    public Item getItemById(@PathVariable("itemId") Long itemId) {
+        log.info("Происходит поиск по id:{}", itemId);
         return itemService.fetchItemById(itemId);
     }
 
     @GetMapping
-    public List<Item> getItemsBuOwnerId(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public List<Item> getItemsBuOwnerId(@RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Происходит поиск по idOwner");
         return itemService.fetchItemsByOwnerId(ownerId);
     }
 
     @GetMapping("/search")
     public List<Item> search(@RequestParam String text,
-                             @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                             @RequestHeader(USER_ID_HEADER) Long ownerId) {
         return itemService.searchItems(text, ownerId);
     }
 }

@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
-/**
- * TODO Sprint add-controllers.
- */
+
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
@@ -34,13 +32,13 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserDto getUserBuId(@PathVariable("userId") Long userId) {
-        log.info("Поиск user");
+        log.info("Поиск user по id:{}", userId);
         return userService.getUserById(userId);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUserBuID(@Positive @PathVariable("userId") Long userId) {
-        log.info("Происходит удаление");
+        log.info("Происходит удаление по id:{}", userId);
         userService.deleteUserById(userId);
     }
 

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserRepository {
     UserDto createUser(User user);
 
-    UserDto modifyUser(Long userId, UserDto user);
+    UserDto updateUser(Long userId, UserDto user);
 
     Optional<User> findUserById(Long userId);
 
@@ -17,4 +17,5 @@ public interface UserRepository {
 
     List<User> getAllUsers();
 
+    boolean isExists(Long id);
 }

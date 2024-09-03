@@ -1,6 +1,6 @@
 package ru.practicum.shareit.user.repository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.mapper.UserMapper;
@@ -9,11 +9,13 @@ import ru.practicum.shareit.user.dto.UserDto;
 import java.util.*;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private final Map<Long, User> users = new HashMap<>();
     private final UserMapper userMapper;
+    private long currentId = 0;
+
 
     @Override
     public UserDto createUser(User user) {
@@ -23,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserDto modifyUser(Long id, UserDto userDto) {
+    public UserDto updateUser(Long id, UserDto userDto) {
         User existingUser = users.get(id);
         validate(userDto, existingUser);
         users.put(id, existingUser);
@@ -45,12 +47,13 @@ public class UserRepositoryImpl implements UserRepository {
         return new ArrayList<>(users.values());
     }
 
-    private long generateNextId() {
-        return users.keySet()
-                .stream()
-                .mapToLong(Long::longValue)
-                .max()
-                .orElse(0) + 1;
+    @Override
+    public boolean isExists(Long id) {
+        return users.containsKey(id);
+    }
+
+    private Long generateNextId() {
+        return ++currentId;
     }
 
     public void validate(UserDto userDto, User existingUser) {

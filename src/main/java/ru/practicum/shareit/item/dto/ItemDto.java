@@ -18,10 +18,10 @@ public class ItemDto extends Item {
     @NotBlank(message = "Name cannot be null or empty")
     private String name;
 
-    @NotNull
+    @NotBlank(message = "Description cannot be null or empty")
     private String description;
 
-    @NotNull
+    @NotNull(message = "Available field cannot be null")
     private Boolean available;
 
 }

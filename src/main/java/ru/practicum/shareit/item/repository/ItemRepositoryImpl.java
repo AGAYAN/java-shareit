@@ -16,6 +16,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     private final Map<Long, Item> itemMap = new HashMap<>();
     private final ItemMapper itemMapper;
+    private long currentId = 0;
 
     @Override
     public ItemDto saveItem(ItemDto item, Long ownerId) {
@@ -58,13 +59,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     private long nextValue() {
-        long number = itemMap.keySet()
-                .stream()
-                .mapToLong(id -> id)
-                .max()
-                .orElse(0);
-
-        return ++number;
+        return ++currentId;
     }
 
     public void validation(ItemDto item, Item item1) {

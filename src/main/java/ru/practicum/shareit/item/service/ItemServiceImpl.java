@@ -8,7 +8,6 @@ import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -24,13 +23,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto createItem(@Valid ItemDto newItem, Long ownerId) {
-        verifyOwnerExists(ownerId);
+        userService.getUserById(ownerId);
         return itemRepository.saveItem(newItem, ownerId);
     }
 
     @Override
     public ItemDto updateItem(Long id, @Valid ItemDto updatedItem, Long ownerId) {
-        verifyOwnerExists(ownerId);
+        userService.getUserById(ownerId);
         Item existingItem = fetchItemById(id);
         if (!Objects.equals(existingItem.getOwner(), ownerId)) {
             throw new ValidationException("Вам не разрешается изменять этот элемент");
@@ -40,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> fetchItemsByOwnerId(Long ownerId) {
-        verifyOwnerExists(ownerId);
+        userService.getUserById(ownerId);
         return itemRepository.findItemsByOwnerId(ownerId);
     }
 
@@ -55,14 +54,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> searchItems(String query, Long ownerId) {
-        verifyOwnerExists(ownerId);
+        userService.getUserById(ownerId);
         return itemRepository.searchItems(query, ownerId);
-    }
-
-    private void verifyOwnerExists(Long ownerId) {
-        UserDto owner = userService.getUserById(ownerId);
-        if (owner == null) {
-            throw new NotFoundException("Человек с индификатором = " + ownerId + " не найден");
-        }
     }
 }

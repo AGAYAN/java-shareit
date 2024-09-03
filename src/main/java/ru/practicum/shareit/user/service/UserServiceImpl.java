@@ -28,7 +28,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(Long id, @Valid UserDto userDto) {
         ensureUniqueEmail(userDto.getEmail());
-        return userRepository.modifyUser(id, userDto);
+        verifyUserId(id);
+        return userRepository.updateUser(id, userDto);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long id) {
+        verifyUserId(id);
         userRepository.removeUserById(id);
     }
 
@@ -54,8 +56,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private void verifyUserId(Long id) {
-        if (!userRepository.findUserById(id).isPresent()) {
-            throw new NotFoundException("Пользователь с идентификатором = " + id + " Не найден");
+        if (!userRepository.isExists(id)) {
+            throw new NotFoundException("Пользователь с идентификатором = " + id + " не найден");
         }
     }
 }
