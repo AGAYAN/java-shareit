@@ -8,9 +8,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
-
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -21,34 +19,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addNewUser(@Valid UserDto userDto) {
-        ensureUniqueEmail(userDto.getEmail());
-        return userRepository.createUser(userMapper.parseUserDtoInUser(userDto));
+       ensureUniqueEmail(userDto.getEmail());
+        User user = userRepository.save(userMapper.parseUserDtoInUser(userDto));
+        return userMapper.parseUserInUserDto(user);
     }
 
     @Override
     public UserDto updateUser(Long id, @Valid UserDto userDto) {
         ensureUniqueEmail(userDto.getEmail());
         verifyUserId(id);
-        return userRepository.updateUser(id, userDto);
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Нету такого user под таким id"));
+
+        if (userDto.getName() != null) {
+            existingUser.setName(userDto.getName());
+        }
+        if (userDto.getEmail() != null) {
+            existingUser.setEmail(userDto.getEmail());
+        }
+
+        User updateUser = userRepository.save(existingUser);
+
+        return userMapper.parseUserInUserDto(updateUser);
     }
 
-    @Override
-    public UserDto getUserById(Long id) {
-        verifyUserId(id);
-        Optional<User> userOptional = userRepository.findUserById(id);
-        User user = userOptional.orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-        return userMapper.parseUserInUserDto(user);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
     public void deleteUserById(Long id) {
         verifyUserId(id);
-        userRepository.removeUserById(id);
+        userRepository.deleteById(id);
     }
 
     private void ensureUniqueEmail(String email) {
-        boolean emailExists = userRepository.getAllUsers().stream()
-                .anyMatch(existingUser -> existingUser.getEmail().equals(email));
+        boolean emailExists = userRepository.findByEmail(email).isPresent();
 
         if (emailExists) {
             throw new IllegalArgumentException("Не удается добавить пользователя с дублирующимся адресом электронной почты");
@@ -56,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void verifyUserId(Long id) {
-        if (!userRepository.isExists(id)) {
+        if (!userRepository.existsById(id)) {
             throw new NotFoundException("Пользователь с идентификатором = " + id + " не найден");
         }
     }

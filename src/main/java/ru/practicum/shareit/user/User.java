@@ -1,14 +1,23 @@
 package ru.practicum.shareit.user;
 
-import lombok.Data;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * TODO Sprint add-controllers.
  */
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@Entity
 @EqualsAndHashCode(exclude = {"id"})
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
