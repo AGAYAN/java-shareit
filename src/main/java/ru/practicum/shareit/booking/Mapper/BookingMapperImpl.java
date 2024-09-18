@@ -7,11 +7,11 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 @Component
 public class BookingMapperImpl {
 
-    public BookingDto parseBookingInBookingDto(Booking booking) {
+    public static BookingDto parseBookingInBookingDto(Booking booking) {
         return new BookingDto(booking.getBooker().getId(), booking.getStart(), booking.getEnd());
     }
 
-    public Booking parseBookingDtoInBooking(BookingDto bookingDto) {
+    public static Booking parseBookingDtoInBooking(BookingDto bookingDto) {
         Booking booking = new Booking();
 
         booking.setStart(bookingDto.getStart());

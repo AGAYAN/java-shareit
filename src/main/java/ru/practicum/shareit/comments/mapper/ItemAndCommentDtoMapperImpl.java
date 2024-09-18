@@ -5,10 +5,9 @@ import ru.practicum.shareit.comments.ItemAndCommentDto;
 import ru.practicum.shareit.item.model.Item;
 
 @Component
-public class ItemAndCommentDtoMapperImpl implements ItemAndCommentDtoMapper {
+public class ItemAndCommentDtoMapperImpl {
 
-    @Override
-    public ItemAndCommentDto parseItemInItemAndCommentDto(Item item) {
+    public static ItemAndCommentDto parseItemInItemAndCommentDto(Item item) {
         return new ItemAndCommentDto(item.getId(),
                 item.getName(),
                 item.getDescription(),
@@ -17,8 +16,7 @@ public class ItemAndCommentDtoMapperImpl implements ItemAndCommentDtoMapper {
                 item.getRequest());
     }
 
-    @Override
-    public Item parseItemAndCommentDtoInItem(ItemAndCommentDto itemAndCommentDto) {
+    public static Item parseItemAndCommentDtoInItem(ItemAndCommentDto itemAndCommentDto) {
         Item item = new Item();
 
         item.setId(itemAndCommentDto.getId());

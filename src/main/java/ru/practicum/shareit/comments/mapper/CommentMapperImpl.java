@@ -5,15 +5,13 @@ import ru.practicum.shareit.comments.Comments;
 import ru.practicum.shareit.comments.CommentsDto;
 
 @Component
-public class CommentMapperImpl implements CommentMapper {
+public class CommentMapperImpl {
 
-    @Override
-    public CommentsDto parseCommentInCommentDto(Comments comment) {
+    public static CommentsDto parseCommentInCommentDto(Comments comment) {
         return new CommentsDto(comment.getId(), comment.getText(), comment.getItem(), comment.getAuthor().getName(), comment.getCreated());
     }
 
-    @Override
-    public Comments parseCommentDtoInComment(CommentsDto commentDto) {
+    public static Comments parseCommentDtoInComment(CommentsDto commentDto) {
         Comments comment = new Comments();
 
         comment.setId(commentDto.getId());

@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
+
 import java.util.Optional;
 
 @Service
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.parseUserInUserDto(updateUser);
     }
 
-    public Optional<User> getUserById(Long id) {
+    public Optional<User> isUserExist(Long id) {
         return userRepository.findById(id);
     }
 

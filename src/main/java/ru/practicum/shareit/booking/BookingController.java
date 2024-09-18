@@ -20,12 +20,14 @@ public class BookingController {
     @PostMapping
     public Booking createNewBooking(@RequestBody BookingDto booking,
                                     @RequestHeader(USER_ID_HEADER) Long userId) {
+        log.info("Созание пользователя");
         return bookingService.addBooking(booking, userId);
     }
 
     @GetMapping("/{bookingId}")
     public Booking getBookingByID(@PathVariable("bookingId") Long bookingId,
                                   @RequestHeader(USER_ID_HEADER) Long userId) {
+        log.info("Вывод booking {bookingId}" + bookingId);
         return bookingService.getBookingById(bookingId, userId);
     }
 
@@ -34,6 +36,7 @@ public class BookingController {
                                          @RequestParam(name = "state",
                                                  required = false,
                                                  defaultValue = "ALL") String state) {
+        log.info("вывод user {userId}" + userId);
         return bookingService.getAllBookingByUserId(userId, state);
     }
 
@@ -42,7 +45,7 @@ public class BookingController {
                                                  @RequestParam(name = "state",
                                                          required = false,
                                                          defaultValue = "ALL") BookingStatus state) {
-
+        log.info("вывод всех user из item");
         return bookingService.getAllUsersItemBookings(userId, state);
     }
 
@@ -50,6 +53,7 @@ public class BookingController {
     public Booking update(@PathVariable("bookingId") Long bookingId,
                           @RequestParam(name = "approved") Boolean approved,
                           @RequestHeader(USER_ID_HEADER) Long userId) {
+        log.info("Обновление booking");
         return bookingService.updateBooking(bookingId, approved, userId);
     }
 }

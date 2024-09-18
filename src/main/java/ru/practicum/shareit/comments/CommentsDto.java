@@ -30,4 +30,10 @@ public class CommentsDto {
         this.authorName = name;
         this.created = created;
     }
+
+    public CommentsDto(Long id, String text, LocalDateTime created) {
+        this.id = id;
+        this.text = text;
+        this.created = created;
+    }
 }

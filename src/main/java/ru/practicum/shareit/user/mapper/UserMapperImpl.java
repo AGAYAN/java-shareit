@@ -7,6 +7,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 @Component
 public class UserMapperImpl implements UserMapper {
+
     @Override
     public UserDto parseUserInUserDto(User user) {
         UserDto userDto = new UserDto();

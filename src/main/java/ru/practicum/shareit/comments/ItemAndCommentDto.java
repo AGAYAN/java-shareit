@@ -28,7 +28,7 @@ public class ItemAndCommentDto {
 
     LocalDateTime nextBooking;
 
-    List<Comments> comments;
+    List<CommentsDto> comments;
 
     public ItemAndCommentDto(Long id, String name, String description, Boolean available, Long owner, Long request) {
         this.id = id;

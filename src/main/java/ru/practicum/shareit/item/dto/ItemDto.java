@@ -8,10 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.item.model.Item;
 
-
-/**
- * TODO Sprint add-controllers.
- */
 @Getter
 @Setter
 @RequiredArgsConstructor

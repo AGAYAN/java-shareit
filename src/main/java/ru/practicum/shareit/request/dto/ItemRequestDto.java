@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @Getter
 @Setter
 @RequiredArgsConstructor

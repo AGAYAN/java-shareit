@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comments.CommentsDto;
 import ru.practicum.shareit.comments.ItemAndCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.mapper.ItemMapper;
+import ru.practicum.shareit.item.dto.mapper.ItemMapperImpl;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -22,25 +22,24 @@ public class ItemController {
 
     private static final String USER_ID_HEADER = "X-Sharer-User-Id";
     private final ItemService itemService;
-    private final ItemMapper itemMapper;
 
     @PostMapping
     public ItemDto addNewItem(@RequestBody Item item,
-                              @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                              @RequestHeader(USER_ID_HEADER) Long ownerId) {
         itemService.createItem(item, ownerId);
-        return itemMapper.parseItemNoDto(item);
+        return ItemMapperImpl.parseItemNoDto(item);
     }
 
 
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@PathVariable("itemId") @Positive Long itemId,
                               @RequestBody Item item,
-                              @RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId) {
+                              @RequestHeader(USER_ID_HEADER) @NotNull Long ownerId) {
         log.info("Получен запрос на обновление предмета с id = {}", itemId);
         log.info("Данные предмета: имя = {}, описание = {}, доступность = {}",
                 item.getName(), item.getDescription(), item.getAvailable());
         itemService.updateItem(itemId, item, ownerId);
-        return itemMapper.parseItemNoDto(item);
+        return ItemMapperImpl.parseItemNoDto(item);
     }
 
     @GetMapping("/{itemId}")
@@ -64,7 +63,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public CommentsDto createNewComment(@PathVariable("itemId") Long itemId,
                                         @RequestBody CommentsDto commentDto,
-                                        @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                                        @RequestHeader(USER_ID_HEADER) Long ownerId) {
         return itemService.addNewComment(itemId, commentDto, ownerId);
     }
 }

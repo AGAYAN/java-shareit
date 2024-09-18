@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Getter
 @Setter
 @RequiredArgsConstructor

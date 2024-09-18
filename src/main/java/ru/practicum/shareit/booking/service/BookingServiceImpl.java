@@ -7,7 +7,7 @@ import ru.practicum.shareit.booking.Mapper.BookingMapperImpl;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.comments.mapper.ItemAndCommentDtoMapper;
+import ru.practicum.shareit.comments.mapper.ItemAndCommentDtoMapperImpl;
 import ru.practicum.shareit.exeption.NotFoundException;
 import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.item.model.Item;
@@ -27,15 +27,14 @@ public class BookingServiceImpl implements BookingService {
     private final UserService userService;
     private final ItemService itemService;
     private final BookingMapperImpl bookingMapper;
-    private final ItemAndCommentDtoMapper itemAndCommentDtoMapper;
 
     @Override
     public Booking addBooking(BookingDto bookingDto, Long ownerId) {
 
         Booking booking = bookingMapper.parseBookingDtoInBooking(bookingDto);
 
-        User user = userService.getUserById(ownerId).orElseThrow(() -> new NotFoundException("ошибка нету user"));
-        Item item = itemAndCommentDtoMapper
+        User user = userService.isUserExist(ownerId).orElseThrow(() -> new NotFoundException("ошибка нету user"));
+        Item item = ItemAndCommentDtoMapperImpl
                 .parseItemAndCommentDtoInItem(itemService.fetchItemById(bookingDto.getItemId()));
 
         booking.setBooker(user);

@@ -5,10 +5,9 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 @Component
-public class ItemMapperImpl implements ItemMapper {
+public class ItemMapperImpl {
 
-    @Override
-    public Item parseItem(ItemDto itemDto) {
+    public static Item parseItem(ItemDto itemDto) {
         Item item = new Item();
 
         item.setId(itemDto.getId());
@@ -19,8 +18,7 @@ public class ItemMapperImpl implements ItemMapper {
         return item;
     }
 
-    @Override
-    public ItemDto parseItemNoDto(Item item) {
+    public static ItemDto parseItemNoDto(Item item) {
         ItemDto itemDto = new ItemDto();
 
         itemDto.setId(item.getId());

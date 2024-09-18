@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.user.User;
 
-/**
- * TODO Sprint add-item-requests.
- */
+
 @Getter
 @Setter
 @RequiredArgsConstructor
