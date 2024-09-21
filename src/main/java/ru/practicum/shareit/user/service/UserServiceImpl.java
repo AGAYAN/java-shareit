@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.parseUserInUserDto(updateUser);
     }
 
-    public Optional<User> isUserExist(Long id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -62,7 +62,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void verifyUserId(Long id) {
+    @Override
+    public void verifyUserId(Long id) {
         if (!userRepository.existsById(id)) {
             throw new NotFoundException("Пользователь с идентификатором = " + id + " не найден");
         }

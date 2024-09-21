@@ -10,7 +10,9 @@ public interface UserService {
 
     UserDto updateUser(Long userId, UserDto user);
 
-    Optional<User> isUserExist(Long userId);
+    Optional<User> getUserById(Long userId);
 
     void deleteUserById(Long userId);
+
+    void verifyUserId(Long id);
 }

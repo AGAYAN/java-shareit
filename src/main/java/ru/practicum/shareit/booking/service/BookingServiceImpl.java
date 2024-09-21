@@ -3,11 +3,11 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
-import ru.practicum.shareit.booking.Mapper.BookingMapperImpl;
+import ru.practicum.shareit.booking.Mapper.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.comments.mapper.ItemAndCommentDtoMapperImpl;
+import ru.practicum.shareit.comments.mapper.ItemAndCommentDtoMapper;
 import ru.practicum.shareit.exeption.NotFoundException;
 import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.item.model.Item;
@@ -26,15 +26,16 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ItemService itemService;
-    private final BookingMapperImpl bookingMapper;
 
     @Override
     public Booking addBooking(BookingDto bookingDto, Long ownerId) {
 
-        Booking booking = bookingMapper.parseBookingDtoInBooking(bookingDto);
+        Booking booking = BookingMapper.parseBookingDtoInBooking(bookingDto);
 
-        User user = userService.isUserExist(ownerId).orElseThrow(() -> new NotFoundException("ошибка нету user"));
-        Item item = ItemAndCommentDtoMapperImpl
+        userService.verifyUserId(ownerId);
+        User user = new User(ownerId);
+
+        Item item = ItemAndCommentDtoMapper
                 .parseItemAndCommentDtoInItem(itemService.fetchItemById(bookingDto.getItemId()));
 
         booking.setBooker(user);

@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public Optional<User> getUserBuId(@PathVariable("userId") Long userId) {
         log.info("Поиск user по id:{}", userId);
-        return userService.isUserExist(userId);
+        return userService.getUserById(userId);
     }
 
     @DeleteMapping("/{userId}")

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comments.CommentsDto;
 import ru.practicum.shareit.comments.ItemAndCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.mapper.ItemMapperImpl;
+import ru.practicum.shareit.item.dto.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -27,7 +27,7 @@ public class ItemController {
     public ItemDto addNewItem(@RequestBody Item item,
                               @RequestHeader(USER_ID_HEADER) Long ownerId) {
         itemService.createItem(item, ownerId);
-        return ItemMapperImpl.parseItemNoDto(item);
+        return ItemMapper.parseItemNoDto(item);
     }
 
 
@@ -39,7 +39,7 @@ public class ItemController {
         log.info("Данные предмета: имя = {}, описание = {}, доступность = {}",
                 item.getName(), item.getDescription(), item.getAvailable());
         itemService.updateItem(itemId, item, ownerId);
-        return ItemMapperImpl.parseItemNoDto(item);
+        return ItemMapper.parseItemNoDto(item);
     }
 
     @GetMapping("/{itemId}")

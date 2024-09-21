@@ -31,9 +31,10 @@ public class CommentsDto {
         this.created = created;
     }
 
-    public CommentsDto(Long id, String text, LocalDateTime created) {
+    public CommentsDto(Long id, String text, Item item, LocalDateTime created) {
         this.id = id;
         this.text = text;
+        this.item = item;
         this.created = created;
     }
 }

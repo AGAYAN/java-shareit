@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class BookingDto {
 
+    private Long id;
+
     @NotNull(message = "Start date cannot be null.")
     @Future(message = "Start date must be in the future.")
     private LocalDateTime start;

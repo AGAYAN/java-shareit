@@ -3,6 +3,8 @@ package ru.practicum.shareit.comments;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import ru.practicum.shareit.booking.dto.BookingDto;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,8 @@ public class ItemAndCommentDto {
     LocalDateTime nextBooking;
 
     List<CommentsDto> comments;
+
+    List<BookingDto> bookings;
 
     public ItemAndCommentDto(Long id, String name, String description, Boolean available, Long owner, Long request) {
         this.id = id;
