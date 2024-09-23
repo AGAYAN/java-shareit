@@ -49,7 +49,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<Item> getItemsBuOwnerId(@RequestHeader(USER_ID_HEADER) Long ownerId) {
+    public List<ItemAndCommentDto> getItemsBuOwnerId(@RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Происходит поиск по idOwner");
         return itemService.fetchItemsByOwnerId(ownerId);
     }

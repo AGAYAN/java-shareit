@@ -11,7 +11,7 @@ public interface ItemService {
 
     Item updateItem(Long itemId, Item item, Long ownerId);
 
-    List<Item> fetchItemsByOwnerId(Long userId);
+    List<ItemAndCommentDto> fetchItemsByOwnerId(Long userId);
 
     ItemAndCommentDto fetchItemById(Long itemId);
 

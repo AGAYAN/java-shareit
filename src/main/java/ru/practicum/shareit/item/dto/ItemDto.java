@@ -25,10 +25,4 @@ public class ItemDto extends Item {
     @NotNull(message = "Available field cannot be null")
     private Boolean available;
 
-    public ItemDto(Long id, String name, String description, Boolean available) {
-        this.id = id;
-        this.name = name;
-        this.available = available;
-        this.description = description;
-    }
 }

@@ -12,11 +12,10 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 public class ItemDetails {
-    private Item item; // The item itself
-    private List<Booking> bookings; // List of bookings associated with the item
-    private List<Comments> comments; // List of comments associated with the item
+    private Item item;
+    private List<Booking> bookings;
+    private List<Comments> comments;
 
-    // Constructor
     public ItemDetails(Item item, List<Booking> bookings, List<Comments> comments) {
         this.item = item;
         this.bookings = bookings;
