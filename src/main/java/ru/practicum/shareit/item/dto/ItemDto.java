@@ -2,14 +2,15 @@ package ru.practicum.shareit.item.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import ru.practicum.shareit.item.model.Item;
 
-/**
- * TODO Sprint add-controllers.
- */
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @EqualsAndHashCode(exclude = {"id"}, callSuper = true)
 public class ItemDto extends Item {
 
