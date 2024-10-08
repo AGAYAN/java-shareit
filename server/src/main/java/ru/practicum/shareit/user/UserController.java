@@ -1,0 +1,42 @@
+package ru.practicum.shareit.user;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.service.UserService;
+
+
+@RestController
+@RequestMapping(path = "/users")
+@RequiredArgsConstructor
+@Slf4j
+public class UserController {
+
+    private final UserService userService;
+
+    @PostMapping
+    public UserDto addNewUser(@RequestBody UserDto user) {
+        log.info("Проходит добавление");
+        return userService.addNewUser(user);
+    }
+
+    @PatchMapping("/{userId}")
+    public UserDto updateUser(@PathVariable("userId") Long userId,
+                              @RequestBody UserDto user) {
+        log.info("Проходит изменени");
+        return userService.updateUser(userId, user);
+    }
+
+    @GetMapping("/{userId}")
+    public User getUserById(@PathVariable("userId") Long userId) {
+        log.info("Поиск user по id:{}", userId);
+        return userService.getUserById(userId);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUserBuID(@PathVariable("userId") Long userId) {
+        log.info("Происходит удаление по id:{}", userId);
+        userService.deleteUserById(userId);
+    }
+}
