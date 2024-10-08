@@ -1,0 +1,138 @@
+package ru.practicum.user;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.client.ExpectedCount;
+import org.springframework.test.web.client.MockRestServiceServer;
+import ru.practicum.user.dto.UserDto;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+
+@RestClientTest(UserClient.class)
+public class UserClientIT {
+    @Value("${shareit-server.url}")
+    private String serverUrl;
+
+    @Autowired
+    private UserClient client;
+
+    @Autowired
+    private MockRestServiceServer server;
+
+    @Autowired
+    private ObjectMapper mapper;
+
+    @BeforeEach
+    void setUp() {
+        server.reset();
+    }
+
+    @AfterEach
+    void tearDown() {
+        server.verify();
+    }
+
+    @Test
+    void testCreateUser() throws IOException, JSONException {
+        final UserDto dto = new UserDto();
+        dto.setName("John Doe");
+        dto.setEmail("john_doe@mail.com");
+        final String dtoJson = mapper.writeValueAsString(dto);
+
+        final File resource = new ClassPathResource("create_user.json").getFile();
+        final String body = Files.readString(resource.toPath());
+
+        server.expect(ExpectedCount.once(), requestTo(serverUrl + "/users"))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(dtoJson, true))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(body));
+
+        final ResponseEntity<Object> response = client.addNewUser(dto);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(response.getHeaders().getContentType(), equalTo(MediaType.APPLICATION_JSON));
+        final String actual = mapper.writeValueAsString(response.getBody());
+        JSONAssert.assertEquals(actual, body, false);
+    }
+
+    @Test
+    void testUpdateUser() throws IOException, JSONException {
+        final UserDto dto = new UserDto();
+        dto.setName("John Doe");
+        dto.setEmail("john_doe@mail.com");
+        final String dtoJson = mapper.writeValueAsString(dto);
+        final File resource = new ClassPathResource("update_user.json").getFile();
+        final String body = Files.readString(resource.toPath());
+        server.expect(ExpectedCount.once(), requestTo(serverUrl + "/users/1"))
+                .andExpect(method(HttpMethod.PATCH))
+                .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(dtoJson, true))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(body));
+
+        final ResponseEntity<Object> response = client.updateUser(1L, dto);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(response.getHeaders().getContentType(), equalTo(MediaType.APPLICATION_JSON));
+        final String actual = mapper.writeValueAsString(response.getBody());
+        JSONAssert.assertEquals(actual, body, false);
+    }
+
+    @Test
+    void testGetUser() throws IOException, JSONException {
+        final File resource = new ClassPathResource("get_user.json").getFile();
+        final String body = Files.readString(resource.toPath());
+        server.expect(ExpectedCount.once(), requestTo(serverUrl + "/users/1"))
+                .andExpect(method(HttpMethod.GET))
+                .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(body));
+
+        final ResponseEntity<Object> response = client.getUserById(1L);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(response.getHeaders().getContentType(), equalTo(MediaType.APPLICATION_JSON));
+        final String actual = mapper.writeValueAsString(response.getBody());
+        JSONAssert.assertEquals(actual, body, false);
+    }
+
+    @Test
+    void testDeleteUser() {
+        server.expect(ExpectedCount.once(), requestTo(serverUrl + "/users/1"))
+                .andExpect(method(HttpMethod.DELETE))
+                .andExpect(header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
+                .andRespond(withStatus(HttpStatus.OK));
+
+        client.deleteUserById(1L);
+    }
+}
